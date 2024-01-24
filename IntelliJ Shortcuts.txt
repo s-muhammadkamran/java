@@ -48,88 +48,106 @@ Ctrl + Shft + F7             >>> To highlight all usage of a symbol with in the 
 Code Arrangement:
 =================
 
-Alt  + Shift + Arrow        >>> Move Code line up and down
-Ctrl + Shift + Arrow        >>> Move Whole method up and down
-Ctrl + -                    >>> Collapse Code Block
-Ctrl + =                    >>> Expand Code Block
-Ctrl + Shift + -            >>> Collapse All Code Block
-Ctrl + Shift + =            >>> Expand All Code Block
-Ctrl + Alt + T              >>> Surround / Wrap selected Code with Block Try/Catch If Else
-Ctrl + Shift + Delete       >>> Unwrap Code / Undo Wrap/Surround
-Alt  + J                    >>> To Select the Symbol
-Alt  + Shift + J            >>> To Deselect the Symbol
-Ctrl + Alt   + Shift + J    >>> To select all occourance of a symbol and then you can replace it.
+Alt  + Shift + Arrow         >>> Move Code line up and down
+Ctrl + Shift + Arrow         >>> Move Whole method up and down
+Ctrl + -                     >>> Collapse Code Block
+Ctrl + =                     >>> Expand Code Block
+Ctrl + Shift + -             >>> Collapse All Code Block
+Ctrl + Shift + =             >>> Expand All Code Block
+Ctrl + Alt + T               >>> Surround / Wrap selected Code with Block Try/Catch If Else
+Ctrl + Shift + Delete        >>> Unwrap Code / Undo Wrap/Surround
+Alt  + J                     >>> To Select the Symbol
+Alt  + Shift + J             >>> To Deselect the Symbol
+Ctrl + Alt   + Shift + J     >>> To select all occourance of a symbol and then you can replace it.
 
 ======================
 Comments & Selections:
 ======================
 
-Ctrl + W					>>> Select the word, string etc
-Ctrl + Shift + W			>>> Unselect
-Ctrl + /					>>> Line Comments/Uncomment the Code --- //
-Ctrl + Shift + /            >>> Code Block Comment/Uncomment /* */
+Ctrl + W					           >>> Select the word, string etc
+Ctrl + Shift + W			       >>> Unselect
+Ctrl + /					           >>> Line Comments/Uncomment the Code --- //
+Ctrl + Shift + /             >>> Code Block Comment/Uncomment /* */
 
 ==========
 Searching:
 ==========
 
-Shit + Shift                >>> Search every where
-Ctrl + Shift + A            >>> Search for Actions
-Ctrl + N                    >>> Search for Classes or Specific directions
-Ctrl + Shift + N            >>> Look for file
-Ctrl + Alt + Shift + N      >>> Method Or Global Variables (Symbols)
-Ctrl + Shift + F            >>> Find in files Find all occourance of some string in files
-Alt  + W                    >>> For whole string matching in Find dialogue
-Ctrl + Shift + R            >>> Replace in Files
+Shit + Shift                 >>> Search every where
+Ctrl + Shift + A             >>> Search for Actions
+Ctrl + N                     >>> Search for Classes or Specific directions
+Ctrl + Shift + N             >>> Look for file
+Ctrl + Alt + Shift + N       >>> Method Or Global Variables (Symbols)
+Ctrl + Shift + F             >>> Find in files Find all occourance of some string in files
+Alt  + W                     >>> For whole string matching in Find dialogue
+Ctrl + Shift + R             >>> Replace in Files
 
 ===========
 Navigation:
 ===========
 
-Ctrl + F12                  >>> Open to view file structure instead of whole file
-Alt  + 7                    >>> Open file structure as a tool windows
-Ctrl + B                    >>> Jump to declaration
-Alt  + F7                   >>> To see more detailed view
-Ctrl + Alt + B              >>> Look for implementation
-Ctrl + U                    >>> Super Method
-Ctrl + Shift + H            >>> Explore Whole Hierarchy
-Ctrl + H                    >>> View Class Hierarchy
-Ctrl + B                    >>> Goto Implementation
-Ctrl + E                    >>> Recently opened files
-Ctrl + Shift + E            >>> Recently opened files code view
-Ctrl + F                    >>> Find in current files
-F3                          >>> Jump to next occourance in current file
-Shift + F3                  >>> Find previous occourance in current file
+Ctrl + F12                   >>> Open to view file structure instead of whole file
+Alt  + 7                     >>> Open file structure as a tool windows
+Ctrl + B                     >>> Jump to declaration
+Alt  + F7                    >>> To see more detailed view
+Ctrl + Alt + B               >>> Look for implementation
+Ctrl + U                     >>> Super Method
+Ctrl + Shift + H             >>> Explore Whole Hierarchy
+Ctrl + H                     >>> View Class Hierarchy
+Ctrl + B                     >>> Goto Implementation
+Ctrl + E                     >>> Recently opened files
+Ctrl + Shift + E             >>> Recently opened files code view
+Ctrl + F                     >>> Find in current files
+F3                           >>> Jump to next occourance in current file
+Shift + F3                   >>> Find previous occourance in current file
 
 ======================
 Preview Documentation:
 ======================
 
-Ctrl + Q                    >>> Preview documentation for the selected class 
+Ctrl + Q                     >>> Preview documentation for the selected class 
 
 =============
 Running Code:
 =============
 
-Ctrl + F9                   >>> Build Project
-Shift + F10                 >>> Run the Current File
-Ctrl + F5                   >>> Re Run the Current File
+Ctrl + F9                    >>> Build Project
+Shift + F10                  >>> Run the Current File
+Ctrl + F5                    >>> Re Run the Current File
 
 ==========
 Debugging:
 ==========
 
-Ctrl + F8                   >>> Add break point
-Shift + F9                  >>> Debug the Current File
-Ctrl + F2                   >>> Stop Running
-F9                          >>> Resume running
-F8                          >>> Step Over
-F7                          >>> Step Into
-Shift + F8                  >>> Step Out
-Ctrl + Shift + F8           >>> View Break Point
+Ctrl + F8                    >>> Add break point
+Shift + F9                   >>> Debug the Current File
+Ctrl + F2                    >>> Stop Running
+F9                           >>> Resume running
+F8                           >>> Step Over
+F7                           >>> Step Into
+Shift + F8                   >>> Step Out
+Ctrl + Shift + F8            >>> View Break Point
 
 ================
 Context Actions:
 ================
 
-Alt + Enter       >>> Invoke Show Context Actions
+Alt + Enter                  >>> Invoke Show Context Actions
+
+================
+GIT in IntelliJ:
+================
+
+Ctrl + Shift + Backquote     >>> Open Git Widget
+Ctrl + K                     >>> Commit Tool Window
+Ctrl + T                     >>> Update Project
+Ctrl + Shift + K             >>> Open Push Dialogue
+Alt  + 9                     >>> Open Git History windows >>> Git Log
+Alt  + M                     >>> Amend Commit
+Ctrl + Shift + U             >>> Unshelve dialoge
+Ctrl + Shift + A             >>> Annotate
+
+
+
+
+
