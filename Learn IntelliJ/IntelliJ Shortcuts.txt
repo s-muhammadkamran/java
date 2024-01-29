@@ -146,8 +146,3 @@ Alt  + 9                     >>> Open Git History windows >>> Git Log
 Alt  + M                     >>> Amend Commit
 Ctrl + Shift + U             >>> Unshelve dialoge
 Ctrl + Shift + A             >>> Annotate
-
-
-
-
-
