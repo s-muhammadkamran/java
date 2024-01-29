@@ -1,0 +1,75 @@
+Starting Spring Framework Application
+https://start.spring.io
+
+Tight Coupling:
+===============
+Tight coupling / Functional Dependency, of code means when 2 pieces of code are closely connected with each other to perform a function.
+
+Loose Coupling:
+===============
+In Loose Coupling of code, code are functionally independent of each other.
+
+Wiring of Dependencies:
+=======================
+Wiring of dependency means injecting the dependency of bean:
+Wiring can be done in 2 ways:
+
+Explicit Wiring: 
+================
+Where you create and pass object to another object explicitly.
+
+Implicit or Auto Wiring: 
+========================
+Where you let the Spring framework to create the object and wire them together.
+
+Spring Architecture:
+====================
+
+1. Launch Spring Context (AnnotationConfigApplicationContext) using @Configuration Class as parameter.
+2. Configure the things we want Spring to manage using @Configuration Class 
+3. Things which is managed by Spring is called Spring Beans
+
+ ================================
+| JVM                            |  
+|  ============================  |
+| | Spring Context             | |
+| |  =======   =======         | |
+| | | Bean1 | | Bean2 |        | |
+| | |       | |       |        | |
+| |  =======   =======         | |
+| |                            | |
+|  ============================  |
+|                                | 
+ ================================
+
+Spring Configuration:
+=====================
+
+Defined using @Configuratin annotation on a class found in the package:
+
+org.springframework.context.annotation.Configuration
+
+@Configuration
+public class MyClassConfiguration
+
+
+@Configuration Annotation:
+==========================
+Defined on class level. It indicate the primary purpose of the class is to define Spring Bean.
+It also defines other Bean dependencies.
+
+@Bean Annotation:
+=================
+@Bean annotation defines a Spring Bean. It is applied on method level. 
+An spring bean is something that is managed by Spring framework.
+
+@Bean(name = "YourCustomBeanName")
+
+AnnotationConfigApplicationContext(YourConfigurationClass.class):
+=================================================================
+It is used to launch a Spring context inside JVM and pass the Beans Configurations.
+
+
+
+
+
