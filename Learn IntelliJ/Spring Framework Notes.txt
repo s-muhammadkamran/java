@@ -29,18 +29,27 @@ Spring Architecture:
 2. Configure the things we want Spring to manage using @Configuration Class 
 3. Things which is managed by Spring is called Spring Beans
 
- ================================
-| JVM                            |  
-|  ============================  |
-| | Spring Context             | |
-| |  =======   =======         | |
-| | | Bean1 | | Bean2 |        | |
-| | |       | |       |        | |
+ ================================                          POJOs          Config
+| JVM                            |                            \             /
+|  ============================  |                             \           /
+| | Spring Context             | |                             IOC Container
+| |  =======   =======         | |                                   |
+| | | Bean1 | | Bean2 |        | |                                   |
+| | |       | |       |        | |                             Ready System  
 | |  =======   =======         | |
 | |                            | |
 |  ============================  |
 |                                | 
  ================================
+
+Spring Container = Spring Context = IoC Container 
+
+IoC = Inversion of Control
+
+There are 2 type of Spring Containers:
+
+1. Bean Container: Basic Spring Container
+2. Application Context" Advance Spring Container with Enterprise-Specific features
 
 Spring Configuration:
 =====================
@@ -58,18 +67,82 @@ public class MyClassConfiguration
 Defined on class level. It indicate the primary purpose of the class is to define Spring Bean.
 It also defines other Bean dependencies.
 
+@Configuration
+public class MySpringConfiguration { }
+
 @Bean Annotation:
 =================
 @Bean annotation defines a Spring Bean. It is applied on method level. 
 An spring bean is something that is managed by Spring framework.
 
-@Bean(name = "YourCustomBeanName")
+@Configuration
+public class MySpringConfiguration { 
+  @Bean(name = "YourCustomBeanName")
+  public String name() {
+    return "Your Name";
+  }  
+  @Bean
+  public int age() {
+    return 20;
+  }
+}
 
 AnnotationConfigApplicationContext(YourConfigurationClass.class):
 =================================================================
 It is used to launch a Spring context inside JVM and pass the Beans Configurations.
+Than using this context you can do many things.
 
+var context = new AnnotationConfigApplicationContext(MySpringConfiguration.class);
+var name = context.getBean("YourCustomBeanName");
+var age = context.getBean("age");
+var address = context.getBean(Address.class);
 
+POJO (Plain Old Java Object):
+=============================
+Any java object is a POJO, no constraints.
 
+Java Bean (EJB):
+================
+Any object is an Enterprise Java Beans if it follows following:
 
+1. Public no args constructor.
+2. Have getter and Setters.
+3. Implements Serializable.
 
+Spring Bean:
+============
+Any Java Object which is managed by Spring Context IOC container is called Spring Bean.
+
+@Primary Annotation:
+====================
+This annotation is applied on Spring Bean to annotate that it is a primary bean in case
+if more than 1 type of this bean implementatin is found using BeanName.class method.
+
+@Bean(name= "person1")
+@Primary
+public Person person1() { return new Person("ABC", 10); }
+
+@Bean(name= "person2")
+@Primary
+public Person person2() { return new Person("GHI", 27); }
+
+context.getBean(Person.class); //will always return the bean marked as Primary.
+
+@Qualifier("QualifierName"):
+============================
+Qualified attribute allow to autowired a bean using it's defined qualifier.
+
+@Bean(name= "person1")
+@Primary
+public Person person1() { return new Person("ABC", 10); }
+
+@Bean(name= "person2")
+@Primary
+public Person person2() { return new Person("GHI", 27); }
+
+@Bean(name= "person3")
+@Qualifier("personQualifier")
+public Person person3() { return new Person("XYZ", 54); }
+
+You can then auto wire this bean into another bean.
+public Person person4(@Qualifier("personQualifier") Person person); //This will always pass the person3 object into another bean.
