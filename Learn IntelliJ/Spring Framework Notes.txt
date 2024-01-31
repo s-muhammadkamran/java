@@ -244,6 +244,25 @@ public class ClassName {
    private Dependency1 dep1;
 }
 
+@Lazy vs Eager Initialization:
+==============================
+Eager initialization is when all the Beans are initialized at Application Startup, this is recomended.
+Lazy initialization can be enforced using @Lazy annotation.
+If something is lazy initialized, it can only be instantiated once someone try to use it.
+It can be applied to @Component or @Bean or @Configuration levels.
+If applied at @Configuration level then all the @Bean defined in that configuration will be initialized lazy.
+
+@Component
+@Lazy
+public class ClassName {}
+
+@Configuration
+@Lazy //All beans defined in this class are lazy initialized because of @Lazy + @Configuration
+public class ConfigClass {
+   @Bean //This will be lazy initialized due to @Lazy annotation at class level
+   public int ABC() { return 0; }
+}
+
 @Bean vs @Component:
 ====================
 @Bean is applied on methods
