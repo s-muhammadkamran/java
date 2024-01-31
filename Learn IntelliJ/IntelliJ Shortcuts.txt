@@ -64,9 +64,9 @@ Ctrl + Alt   + Shift + J     >>> To select all occourance of a symbol and then y
 Comments & Selections:
 ======================
 
-Ctrl + W					           >>> Select the word, string etc
-Ctrl + Shift + W			       >>> Unselect
-Ctrl + /					           >>> Line Comments/Uncomment the Code --- //
+Ctrl + W					 >>> Select the word, string etc
+Ctrl + Shift + W			 >>> Unselect
+Ctrl + /					 >>> Line Comments/Uncomment the Code --- //
 Ctrl + Shift + /             >>> Code Block Comment/Uncomment /* */
 
 ==========

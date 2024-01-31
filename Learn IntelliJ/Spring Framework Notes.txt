@@ -11,6 +11,7 @@ In Loose Coupling of code, code are functionally independent of each other.
 
 Wiring of Dependencies:
 =======================
+Process of identifying the dependencies of a Bean.
 Wiring of dependency means injecting the dependency of bean:
 Wiring can be done in 2 ways:
 
@@ -24,7 +25,6 @@ Where you let the Spring framework to create the object and wire them together.
 
 Spring Architecture:
 ====================
-
 1. Launch Spring Context (AnnotationConfigApplicationContext) using @Configuration Class as parameter.
 2. Configure the things we want Spring to manage using @Configuration Class 
 3. Things which is managed by Spring is called Spring Beans
@@ -44,7 +44,9 @@ Spring Architecture:
 
 Spring Container = Spring Context = IoC Container 
 
-IoC = Inversion of Control
+IoC = Inversion of Control, Shifting the responsibility of creating Object, resolving it's dependencies and wiring them together is IoC
+
+DI = Dependency Injection, Identfying Bean, their dependencies and wire them together to create objects via reflection.
 
 There are 2 type of Spring Containers:
 
@@ -146,3 +148,107 @@ public Person person3() { return new Person("XYZ", 54); }
 
 You can then auto wire this bean into another bean.
 public Person person4(@Qualifier("personQualifier") Person person); //This will always pass the person3 object into another bean.
+
+@Component:
+===========
+An instance of class will be managed by Spring Framework
+
+This annotation makes any class a Spring Bean available for Auto Wiring and managed by Spring Framewrok
+
+@Component
+public class ABC {
+}
+
+Then this class instances will be auto wired and passed to the classes whenever is required.
+
+We can also use @Primary and @Qualifier annotation with @Component annotation
+
+@ComponentScan:
+===============
+This annotation defines in which package and sub packages to look for component definition.
+
+@ComponentScan("com.in28minutes.learningspringframework.game") //In the named package and all it's sub packages
+@ComponentScan //Current Package and all sub packages
+
+Then the spring frame will look in this package plus all it's sub packages for Component annotation for auto wiring.
+If you remove the package name the Component Scan will always be performed in current package and all the sub packages.
+
+@Autowired:
+===========
+This annotation used with Field Injections to specify that the object of this will be passed by Spring framework.
+When you use @Autowired, it'll always give you the preferred Primary Component implementation.
+
+All the field and setter injections required AutoWired annotation.
+
+@Qualifier:
+===========
+@Qualifier("qualifierName")
+This Qualifier is used when more than 1 implementation of the Component is present.
+If there is no @Qualifier annotation mentioned you can still use the name of the Spring Bean
+Starting with small case character. This qualifier is implicitly available.
+
+@Component
+public class ImplicitQualifierName { }
+
+On this class there is an implicit Qualifier avilable with the name Qualifier("implicitQualifierName")
+
+Type of Injections:
+===================
+
+Constructor Based Injection:
+============================
+This is the recomended injection no autowired is required
+
+@Component
+public class Dependency1 {}
+
+@Component
+@ComponentScan
+public class ClassName {
+   private Dependency1 dep1;   
+   public ClassName(Dependency1 dep1) {
+      super();
+	  this.dep1 = dep1;
+   }
+}
+
+Setter Based Injection:
+=======================
+It required us to set the setter as Autowired
+
+@Component
+public class Dependency1 {}
+
+@Component
+@ComponentScan
+public class ClassName {
+   private Dependency1 dep1;   
+   
+   @Autowired
+   public void setDep1(Dependency1 dep1) {      
+	  this.dep1 = dep1;
+   }
+}
+
+Field Based Injection:
+======================
+With field injection you must have to specify @Autowired and/or @Qualifier annotation.
+
+@Component
+public class Dependency1 {}
+
+@Component
+@ComponentScan
+public class ClassName {
+   @Autowired
+   private Dependency1 dep1;
+}
+
+@Bean vs @Component:
+====================
+@Bean is applied on methods
+@Component is applied on Classes.
+@Bean you have to write Object creation code
+@Bean is for scenarios where You have to create objects which doesn't support Dependency Injections
+For example 3rd party libraries, In situations where you need to do alot of validations before creating object.
+@Component is recomended way of creating objets.
