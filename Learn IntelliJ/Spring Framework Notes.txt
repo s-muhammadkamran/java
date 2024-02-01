@@ -29,17 +29,17 @@ Spring Architecture:
 2. Configure the things we want Spring to manage using @Configuration Class 
 3. Things which is managed by Spring is called Spring Beans
 
- ================================                          POJOs          Config
-| JVM                            |                            \             /
-|  ============================  |                             \           /
-| | Spring Context             | |                             IOC Container
-| |  =======   =======         | |                                   |
-| | | Bean1 | | Bean2 |        | |                                   |
-| | |       | |       |        | |                             Ready System  
-| |  =======   =======         | |
-| |                            | |
-|  ============================  |
-|                                | 
+ ================================         POJOs          Config                      Spring Modules             
+| JVM                            |           \             /            ___________________|_________________________________
+|  ============================  |            \           /            |         |              |          |           |     |
+| | Spring Context             | |            IOC Container        Spring Core  Spring Test  Spring MVC  Spring JDBC  JMS  Testing
+| |  =======   =======         | |                  |
+| | | Bean1 | | Bean2 |        | |                  |
+| | |       | |       |        | |             Ready System                                 Spring Projects
+| |  =======   =======         | |                                                                  |
+| |                            | |                          -------------------------------------------------------------
+|  ============================  |                         |                  |              |             |             |
+|                                |                  Spring Integration   Spring Boot   Spring Cloud   Spring Data   Spring Security  
  ================================
 
 Spring Container = Spring Context = IoC Container 
@@ -271,3 +271,56 @@ public class ConfigClass {
 @Bean is for scenarios where You have to create objects which doesn't support Dependency Injections
 For example 3rd party libraries, In situations where you need to do alot of validations before creating object.
 @Component is recomended way of creating objets.
+
+J2EE = JavaEE = JakartaEE:
+==========================
+Previously is was J2EE, Java2 Enterprise Edition, 
+Then it becomes Java EE, Java Platform Enterprise Edition
+Then Oracle Foundation gave Java EE rights to Eclipse foundation and it becomes:
+JakartaEE, Jakarta Enterprise Edition.
+
+Important specifications of Jakarta EE:
+=======================================
+JSP    = Jakarta Server Pages Specification
+JSTL   = Jakarta Standard Tag Library Specification
+EJB    = Jakarta Enterprise Bean Specification
+JAX-RS = Jakarta RESTful Web Services Specification
+       = Jakarta Bean Validation Specification
+CDI    = Jakarta Context and Dependency Injection Specification, Spring implements CDI specification.
+JPA    = Jakarta Persistence API Specification
+
+These are specification, or interfaces there are no implementations to it. 
+Spring framework provide it's own implementatin of CDI specification.
+
+All the important Annotation so far in Spring:
+==============================================
+
+01. new AnnotationConfigApplicationContext("NameOfClassConfigurationAnnotation") - Start Spring Context/Container using Java Config
+02. new ClassPathXmlApplicationContext("SpringBeanXMLConfigurationFilePath.xml") - Start Spring Context/Container using Java Config
+02. @Configuration: This annotation defines a Java Configuration for Spring Context/Container to start in this file you can define Beans
+03. @Bean("beanName"): The definition of Bean indicates that a method returns a Bean, this is defined in a class with @Configuration
+04. @Component: Indicate that an annotated class is a component
+05. @ComponentScan("package name"): Define specific package to search for Components.
+06. @Primary: Indicate that a Bean should be given preference if multiple beans are qualified for autowiring.
+07. @Qualifier("qualifierName"): Used on a field or parameter as a qualifier for candidate bean when autowiring.
+08. @Autowired: Indicate that a field and property value is automatically inserted.
+09. @Lazy: Indicate that the Bean will only be initialized when it is requested.
+10. @Scope(value=ConfigurableBeanFactory.SCOPE_PROTOTYPE)  //SCOPE_PROTOTYPE or SCOPE_SINGLETON, singleton is by default.
+11. @PostConstruct: Indicate the code to be executed after the Bean is constructed
+12. @PreDestroy: Indicate the code to be executed before the Bean is destryoed
+
+StereoType Annotation:
+======================
+These are more specific annotation for @Component annotation.
+
+13. @Service    : Specialization of @Component annotation, Indicate that a component is a business logic
+14. @Controller : Specialization of @Component annotation, Indicate that a component is a Controller like WebController, APIController
+15. @Repository : Specialization of @Component annotation, Indicate that a component is talking to Database
+
+Jakarta CDI annotation, some annotaion which are also supported by Spring:
+==========================================================================
+16. @Named  = Same as Component
+17. @Inject = Same as Autowired
+18. @Qualifier
+19. @Scope
+20. @Singleton
