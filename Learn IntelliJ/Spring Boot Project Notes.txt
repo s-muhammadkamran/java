@@ -1,1 +1,21 @@
-Spring Boot
+
+How to start a Spring Boot Project:
+===================================
+
+https://start.spring.io
+Choose Maven as build tool, Java as language
+Group name is the Package name
+Artifact name is the ApplicationName
+Packaging choose Jar
+Choose Latest Java Version.
+Add dependency for Spring.Web
+
+@SpringBootApplication Annotation:
+==================================
+
+@RestController Annotation:
+===========================
+
+@RequestMapping("/courses") Annotation:
+=======================================
+
