@@ -61,6 +61,12 @@ Add dependency for Spring.Web
 ==================================
 This annotation defines the entry point for a SpringBootApplication
 
+It's a combination of 3 annotations:
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan
+
 @RestController Annotation:
 ===========================
 This annotaion is a Stereotype annotation of @Component. 
@@ -171,6 +177,50 @@ Adding complex configurations:
 You can use the @ConfigurationProperties("prefix-name") annotation to read config values 
 and then auto wired it.
 
+Simplifying Deployment:
+=======================
+OLD Process:
+
+1. Install Java
+2. Install Web/Application Server like Tomcat/webshere/weblogic
+3. Deploy the application WAR (Web Archive)
+
+New Process:
+
+1. Install Java
+2. Embedded Server (part of your jar file) 
+   Just deploy your web application using Mave Install.
+3. You can than directly run the file using the command
+   java YourJarFileName.jar
+   
+Monitor your Application in Production using SpringBoot Actuator:
+=================================================================
+Monitor and Manage your application in Production environment
+You have beans endpoint
+your have health information
+you can have metrics endpoint
+you have mapping endpoint
+
+You can configure the dependency using the pom.xml dependency
+spring-boot-starter-actuator
+
+You than have to reload the project through Maven-Reload Project.
+Then run it and goto: http://localhost:8080/actuator
+
+In order to get more option in actuator you need to add following entry in configuration.
+
+management.endpoints.web.exposure.include=*
+OR
+management.endpoints.web.exposure.include=health,metrics
+
+Some of the important endpoints are
+
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/beans
+http://localhost:8080/actuator/health
+
+
+   
 
 
 
