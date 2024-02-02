@@ -4,8 +4,11 @@ import com.in28minutes.springboot.learnjpaandhibernate.course.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.util.Arrays;
+
+@Service
 public class CourseJdbcCommandLineRunner implements CommandLineRunner {
 
     @Autowired
@@ -35,7 +38,7 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
         repo.deleteById(2);
 
         System.out.println(repo.findById(1));
-        System.out.println(repo.findById(3));
-        System.out.println(repo.findById(4));
+        System.out.println("Printing List of All records");
+        Arrays.stream(repo.getAllCourses().toArray()).forEach(System.out::println);
     }
 }

@@ -1,5 +1,8 @@
 package com.in28minutes.springboot.learnjpaandhibernate.course;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Course {
     private long id;
     private String name;

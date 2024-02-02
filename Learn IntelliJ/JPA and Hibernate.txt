@@ -36,13 +36,72 @@ In order to add the table we can have a resource file name schema.sql
 
 Schema.sql:
 ===========
-Create table course(
-  id bigint not null,
-  name varchar(255) not null,
-  author varchar(255) not null,
-  primary key (id)
+CREATE TABLE COURSE (
+  id BIGINT NOT NULL PRIMARY KEY, --IDENTITY,
+  name NVARCHAR(MAX) NOT NULL,
+  author NVARCHAR(MAX) NOT NULL
 );
 
 The JPA framework when found this file at startup, it'll automatically create this table or run the specified SQL command.
+
+Using JDBCTemplate class:
+=========================
+1. Create a JdbcTemplate class object. Set it with @Autowired
+2. Define a query string var sql = """DELETE FROM COURSE WHERE ID = ?"""
+3. For Insert, Update, Delete calls the JdbcTemplete object's update method
+4. Pass Query with the arguments for ? place holders as param.
+   jdbcTemplateObj.update(sql, courseObj.getId());
+5. For SELECT Query for 1 record use the queryForObject method
+   var sql = "SELECT * FROM COURSE WHERE ID = ?;";
+   jdbcTemplateObj.queryForObject(sql, new BeanPropertyRowMapper<>(Course.class), id);
+6. For SELECT Query for multiple records use the query method
+   var sql = "SELECT * FROM COURSE;";
+   jdbcTemplateObj.query(sql, new BeanPropertyRowMapper<>(Course.class), id);
+7. You can only use the BeanPropertyRowMapper if the name of DB columns are same as the property names.
+   Otherwise you have to have a CustomMapper implementation.
+
+RowMapper:
+==========
+BeanPropertyRowMapper:
+
+The things which map DB result set to a Bean is called RowMapper.
+//ResultSet => Bean => Row Mapper => BeanPropertyRowMapper<>(YourBeanClassName.class)
+The property in Bean and DB columns should be same for it to work automatically
+
+
+You can create your custom mapper as well by implementing RowMapper interface
+public class Course implements RowMapper {
+  public Course mapRow(ResultSet rs, int rowNum) throws SQLException {
+    Course c = new Course();
+	c.setId(rs.getLong("id"));
+	c.setName(rs.getString("name"));
+	c.setAuthor(rs.getString("author"));	
+	return c;
+  }
+}
+
+Executing Queries On Startup:
+=============================
+In order to directly run the queries when application starts you need an implementation of
+CommandLineRunner interface with one method called run. Then Spring framework will run it on startup.
+
+@Service
+public class CourseJdbcCommandLineRunner implements CommandLineRunner {
+  @Autowired
+  private CourseJdbcRepository repo;
+  
+  public void run(Sring... args) throws Exception {
+    repo.insert(new Course(1, "abc", "def"));
+	repo.insert(new Course(2, "ghi", "jkl"));
+	repo.findById(1)
+	var courses = repo.retrieveAllCourses();
+	var course = repo.findById(1);
+	repo.deleteById(2);
+  }
+}
+
+
+
+
 
 
