@@ -23,12 +23,12 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        jdbcRun(args);
-        jpaRun(args);
-        dataJpaRun(args);
+        jdbcRun();
+        jpaRun();
+        dataJpaRun();
     }
 
-    private void jdbcRun(String... args) throws Exception {
+    private void jdbcRun() {
         jdbcRepo.insert(
                 new Course(1,"Learn Java Now JDBC", "In28Minutes")
         );
@@ -56,7 +56,7 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
         Arrays.stream(jdbcRepo.getAllCourses().toArray()).forEach(System.out::println);
     }
 
-    public void jpaRun(String... args) throws Exception {
+    private void jpaRun() {
         jpaRepo.insert(
                 new Course(1,"Learn Java Now JPA", "In28Minutes")
         );
@@ -84,7 +84,7 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
         Arrays.stream(jpaRepo.getAllCourses().toArray()).forEach(System.out::println);
     }
 
-    public void dataJpaRun(String... args) throws Exception {
+    private void dataJpaRun() {
         dataJpaRepo.save(
                 new Course(1,"Learn Java Now - Data JPA", "In28Minutes")
         );
@@ -116,8 +116,5 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
         System.out.println(dataJpaRepo.findByName("Learn AWS Now - Data JPA"));
         System.out.println(dataJpaRepo.findByAuthor("In28Minutes"));
         System.out.println(dataJpaRepo.findByAuthor("In21Minutes"));
-
-
-
     }
 }
