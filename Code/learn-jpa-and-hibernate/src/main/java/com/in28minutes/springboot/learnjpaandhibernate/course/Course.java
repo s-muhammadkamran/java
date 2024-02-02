@@ -1,9 +1,14 @@
 package com.in28minutes.springboot.learnjpaandhibernate.course;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
 import org.springframework.stereotype.Component;
 
-@Component
+@Entity
+@NamedQuery(name="getAllCourses", query="SELECT C FROM Course C")
 public class Course {
+    @Id
     private long id;
     private String name;
     private String author;

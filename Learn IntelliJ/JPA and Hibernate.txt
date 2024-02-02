@@ -42,7 +42,13 @@ CREATE TABLE COURSE (
   author NVARCHAR(MAX) NOT NULL
 );
 
-The JPA framework when found this file at startup, it'll automatically create this table or run the specified SQL command.
+The Spring framework when found this file at startup, it'll automatically create this table or run the specified SQL command.
+
+
+
+===========
+Using JDBC:
+===========
 
 Using JDBCTemplate class:
 =========================
@@ -102,6 +108,47 @@ public class CourseJdbcCommandLineRunner implements CommandLineRunner {
 
 
 
+==========================
+Using JPA instead of JDBC:
+==========================
+You directly map your Bean with the DB Table using 
+@Entity(name="TableName"), @Id, @Column(name="colName") Annotation:
+
+EntityManager Class:
+====================
+When working with JDBC you use JdbcTemplate class, similary
+When working with JPA you use EntityManager class.
+
+@Entity Annotation for DB Entity:
+@ColumnName Annotation: You can use this if you column names are not not identical to properties name
+@Id Annotation for defining Primary Key
+@PersistenceContext for JPA EntityManager instead of @Autowired.
+@Transactional you need this annotation for executing queries with JPA.
+@NamedQuery you can define a named query using this annotation.
+
+spring.jpa.show-sql=true: Set this configuration to seeing what queries JPA are running.
+
+1. Set Course class as @Entity for Table in DB
+2. Set Id field as @ID annotation for PK
+3. Create an EntityManager bean for and mark it with @Autowired annotation.
+   Instead of autowired you can use a @PersistenceContext annotation for specifically   
+4. For insert call entityManagerObj.merge(courseObj)
+5. For select call entityManagerObj.find(Course.class, id)
+6. For Delete just call remove method after find method.
+   var c = entityManagerObj.find(Course.class, id);
+   entityManagerObj.remove(c);
+7. For selecting all, create a named query first and then call getResultList method on it
+   @Entity
+   @NamedQuery(name="getAllCourses", query="SELECT C FROM Course C")
+   public class Course {
+   }
+   var query = entityManager.createNamedQuery("getAllCourses", Course.class);
+   return query.getResultList();
 
 
+
+
+=====================================
+Using Spring Data JPA instead of JPA:
+=====================================
 
