@@ -151,4 +151,26 @@ spring.jpa.show-sql=true: Set this configuration to seeing what queries JPA are 
 =====================================
 Using Spring Data JPA instead of JPA:
 =====================================
+01. with Spring Data JPA, you don't even have to write any Repository code.
+02. You'll just declare an interface which will extend from JpaReposity interface
+   Informing it which entity to manage and what is the type of Primary Key for this class
+   public interface CourseSpringDataJpaRepository extends JpaReposity<Course, Long> {}
+03. After that you just ask Spring to @Autowired it to you and start using it.
+   @Autowired
+   private CourseSpringDataJpaRepository dataJpaRepo;
+04. The spring framework creates this class and it's implemention and provide you it's object at runtime.
+05. In this case you don't need entityManager as well and talks directly with interface.
+06. For Insert call dataJpaRepo.save(course);
+07. For Delete call dataJpaRepo.deleteById(1L); //You have to specifically provide L for Long
+08. For Selecing 1 record call dataJpaRepo.findById(2L);
+09. For Selecting multiple records call dataJpaRepo.findAll()
+10. You can even add your custom methods in Interface by following naming convention of following column names
+    public List<Course> findByAuthors(String author);
+	
 
+=================
+Hibernate vs JPA:
+=================
+JPA is an specification
+Hibernate is the most famous JPA implementation
+Another implementation of JPA is TopLink
