@@ -1,1 +1,48 @@
-JPA and Hibernate
+JPA = Java Persistence API
+
+How to start a Spring Boot Project with JPA, Hibernate, JDBC and H2 DB:
+=======================================================================
+Goto https://start.spring.io
+Choose Maven as build tool, Java as language
+Group name is the Package name
+Artifact name is the ApplicationName
+Packaging choose Jar
+Choose Latest Java Version.
+Add dependency for the following
+1. Spring.Web
+2. JPA
+3. JDBC
+4. H2
+
+In the application.propertise file add the following config:
+spring.h2.console.enabled=true
+
+Run the application and then you can navigate the H2 console on the following URL:
+http://localhost:8080/h2-console
+
+Connect to H2 Database:
+=======================
+By default H2 DB will be started with you application
+And the DB url will be generated dynamically, each time a new one when you start.
+So we need to fix the URL of DB using application.propertise file config
+
+spring.datasource.url=jdbc:h2:mem:testdb
+
+Then run your application and access H2 Console
+http://localhost:8080/h2-console
+
+You H2 DB will be empty, we need to have some tables in there.
+In order to add the table we can have a resource file name schema.sql
+
+Schema.sql:
+===========
+Create table course(
+  id bigint not null,
+  name varchar(255) not null,
+  author varchar(255) not null,
+  primary key (id)
+);
+
+The JPA framework when found this file at startup, it'll automatically create this table or run the specified SQL command.
+
+
