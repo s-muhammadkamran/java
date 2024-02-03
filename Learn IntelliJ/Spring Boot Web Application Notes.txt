@@ -1,0 +1,92 @@
+Build a Web Application using Spring Boot:
+==========================================
+To build a Web Application, Generate the project from http://start.spring.io/
+Add the dependency for the following
+Web (Supports for MVC, embeded tomcat, WebServices etc)
+DevTools (provides runtime development support tools)
+JASPER  (For Forwarding request from Web Controller to JSP pages)
+
+Add the following configuration in application.config
+
+server.port=8080 //To start the tomcat server on port 8080 which is default in application.properties.
+logging.level.org.springframework=DEBUG
+
+Some Annotation:
+================
+
+@Controller: As @RestController declares a Rest Controller, Similarly @Controller declares a Web Controller.
+
+@RequestMapping("path"): Maps a method to the URL path.
+It can have multiple parameters like 
+value {}: More than one path can be defined
+headers{}: The required headers to be present when making a request
+method{}: {RequestMethod.Post and/or RequestMethod.Get}: Get is the default value
+
+@RequestMapping(
+  value={"/sayhello", "say-hello", "/sayhello/{name}, *"}, method={RequestMethod.Post, RequestMethod.Get},
+  headers={"name=kamran", "pass=123"}, produces={"application/json", "application/xml"},
+  consumes="text/html"
+)
+@ResponseBody
+public String sayHello(@RequestParam("name") String name) {
+  name = name == null || name.isEmpty() ? "Stranger" : name.trim();
+  return "Hello "+name+"! what are you learning today?";
+}
+
+@ResponseBody: Annotation bind the Http response body with a domain object in the return type.
+
+@Controller
+public class SayHelloController {
+    @RequestMapping(value = {"say-hello", "sayhello", "*"})
+    @ResponseBody
+    public String sayHello(@RequestParam("name") String name) {
+        name = name == null || name.isEmpty() ? "Stranger" : name.trim();
+        return "Hello "+name+"! what are you learning today?";
+    }
+}
+
+
+
+Views:
+======
+Web Controller instead of returning HTML and other objects can redirect users to what is called as Views
+The most famous type of views used are called JSP
+JSP = Java or Jakarta Server Pages
+You save these views in the following location:
+/src/main/resources/META-INF/resources/[WEB-INF/jsp/]
+
+You can inform about the path of JSPs to spring controller using the application.properties file
+Save the following 2 configuration in the properties file
+
+spring.mvc.view.prefix=/WEB-INF/jsp/
+spring.mvc.view.suffix=.jsp
+
+It already knows the path until /src/main/resources/META-INF/resources/
+You need to inform it the path after that.
+And the method just return the fileName part of the views.
+
+@RequestMapping(value={"say-hello-jsp", "sayhellojsp"})
+// \src\main\resources\META-INF\resources\WEB-INF\jsp\sayHello.jsp
+// You can keep the Prefix.Suffix format in application.properties file
+// prefix=/WEB-INF/jsp
+// suffix=.jsp
+public String sayHelloJsp() {
+	return "sayHelloInJsp";
+}
+
+In order for it to work, you need to add the JSP dependency for JASPER in pom.xml
+<dependency>
+	<groupId>org.apache.tomcat.embed</groupId>
+	<artifactId>tomcat-embed-jasper</artifactId>
+</dependency>
+
+
+
+
+
+
+
+
+
+
+
