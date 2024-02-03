@@ -1,3 +1,95 @@
+=====================
+Model 1 Architecture:
+=====================
+When everything ViewLogic, Flow Logic, Queries to DB was kept inside JSPs. 
+It quickly become complex
+
+               Browser
+			    /   \
+			   /	 \
+		     JSP1   JSP2
+			   \     /  
+                \   /   
+               =======
+              | Model |
+               ======= 		
+
+=====================
+Model 2 Architecture: 
+=====================
+When there was separation of Control. Using Separate Model, View and Controller.
+Model: Is the Data which is to generate the view
+View:  Is View Logic which is your JSP
+Controller: Is your Controllers
+
+
+               Browser
+			    /  \
+			   /	\
+		  Servlet1 Servlet2
+             /  |  |  \
+            /   |  |   \
+          View1 |  |  View2
+             \  |  |   /		
+              \ |  |  /
+               =======
+              | Model |
+               ======= 		
+
+===========================================
+Model 2 Architecture with Front Controller:
+===========================================
+Is the same as Model 2 Controller but all the controller goes to 1 Front Controller
+From where it get dispatched to relevant Controller or Views.
+
+Dispatcher Servelet is our Front Controller.
+
+               Browser
+			      | 
+			      |
+           Front Controller
+		   =================
+		  /     |     |     \
+         /      |     |      \
+	Servlet1  View1  View2  Servlet2
+         \      |     |      /
+          \     |     |     / 
+     	   =================
+          |      Model      |
+           =================
+
+		   
+===================
+Dispatcher Servlet:
+===================
+Dispatcher Servlet is the Model 2 Front Controller implementation.
+All the request to any views or Controller will be received by Dispatcher Servlet.
+Dispatcher Servlet is then dispatches the request to the appropriate controller.
+All the Controller and View have access to Model.
+Following is how it works:
+
+0. A request is made from Browser.
+   http://localhost:8080/login
+   
+1. Dispatcher Servlet receives requests
+2. It then identify the right controller and execute it.
+   /login => LoginController.login
+   
+3. Controller will return the Model and View to Dispatcher Servlet.
+   Controller => Puts data into model
+   Controller => Return view name => login
+   
+4. Dispatcher Servlet is then talk to the ViewResolver and get the View Name.
+   ViewResolver => /WEB-INF/jsp/login.jsp
+   
+5. It then make the model available to the view.
+6. View is then processed and return the response to the browser
+
+
+
+
+
+==========================================
 Build a Web Application using Spring Boot:
 ==========================================
 To build a Web Application, Generate the project from http://start.spring.io/
@@ -11,6 +103,7 @@ Add the following configuration in application.config
 server.port=8080 //To start the tomcat server on port 8080 which is default in application.properties.
 logging.level.org.springframework=DEBUG
 
+================
 Some Annotation:
 ================
 
@@ -45,8 +138,7 @@ public class SayHelloController {
     }
 }
 
-
-
+======
 Views:
 ======
 Web Controller instead of returning HTML and other objects can redirect users to what is called as Views
@@ -64,6 +156,7 @@ spring.mvc.view.suffix=.jsp
 It already knows the path until /src/main/resources/META-INF/resources/
 You need to inform it the path after that.
 And the method just return the fileName part of the views.
+The names of path and file are case sensitive
 
 @RequestMapping(value={"say-hello-jsp", "sayhellojsp"})
 // \src\main\resources\META-INF\resources\WEB-INF\jsp\sayHello.jsp
@@ -75,18 +168,32 @@ public String sayHelloJsp() {
 }
 
 In order for it to work, you need to add the JSP dependency for JASPER in pom.xml
+It'll allow you to run JSP's from embed Tomcat
 <dependency>
 	<groupId>org.apache.tomcat.embed</groupId>
 	<artifactId>tomcat-embed-jasper</artifactId>
 </dependency>
 
+======
+Model:
+======
+You can pass values to your JSP using something called ModelMap
+ModelMap is injected in your code and you just need to call the method:
+ModelMapObj.put("name", name)
+What ever you pass here, it'll be available in your JSP with the name
+you provided as the first parameters
+public String login(@RequestParam String name, ModelMap model) {
+	model.put("name", name);
+	return "login";	
+}
 
+You can use this in the JSP using the expression language ${name} tag.
 
+Logging Factory:
+================
+If you want custom logging in your application you can request a logger from 
+LoggerFactory.getLogger(getClass()); method.
+It will create a logger using Your Class, and you can easily filter your logs
 
-
-
-
-
-
-
+Logger logger = LoggerFactory.getLogger(getClass());
 
