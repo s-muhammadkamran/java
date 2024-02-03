@@ -17,7 +17,7 @@ public class SayHelloController {
     @ResponseBody
     public String sayHelloHtml(@RequestParam("name") String name) {
         name = name == null || name.isEmpty() ? "Stranger" : name.trim();
-        var res = new StringBuffer();
+        var res = new StringBuilder();
         res.append("""
                 <html><head><title>My first Html Page</title></head>
                 <body><h1>Hello&nbsp;""");

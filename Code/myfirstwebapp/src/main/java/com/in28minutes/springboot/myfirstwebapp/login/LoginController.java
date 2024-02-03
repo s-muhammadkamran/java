@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     @RequestMapping(value = {"/logindemo", "/login-demo"}, method = RequestMethod.GET)
     public String logindemo(@RequestParam String name, ModelMap model) {
         model.put("name", name);
