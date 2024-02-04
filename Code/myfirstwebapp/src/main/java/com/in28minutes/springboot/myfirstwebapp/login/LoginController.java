@@ -5,12 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
+@SessionAttributes("name")
 public class LoginController {
 
     @Autowired
@@ -25,17 +23,19 @@ public class LoginController {
     }
 
     @RequestMapping(value="/login", method=RequestMethod.GET)
-    public String login() {
+    public String login(ModelMap model) {
+        model.clear();
         return "login";
     }
 
     @RequestMapping(value="/login", method=RequestMethod.POST)
     public String welcome(@RequestParam String userName, @RequestParam String password, ModelMap model) {
         if(authSvc.authenticate(userName, password)) {
-            model.put("userName", userName);
+            model.put("name", userName);
             return "welcome";
         }
         else {
+            model.put("loginError", "Invalid username or password");
             return "login";
         }
     }
