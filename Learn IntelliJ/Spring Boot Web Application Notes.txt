@@ -5,10 +5,10 @@ When everything ViewLogic, Flow Logic, Queries to DB was kept inside JSPs.
 It quickly become complex
 
                Browser
-			    /   \
-			   /	 \
-		     JSP1   JSP2
-			   \     /  
+                /   \
+               /     \
+             JSP1   JSP2
+               \     /  
                 \   /   
                =======
               | Model |
@@ -24,9 +24,9 @@ Controller: Is your Controllers
 
 
                Browser
-			    /  \
-			   /	\
-		  Servlet1 Servlet2
+                /  \
+               /    \
+          Servlet1 Servlet2
              /  |  |  \
             /   |  |   \
           View1 |  |  View2
@@ -45,16 +45,16 @@ From where it get dispatched to relevant Controller or Views.
 Dispatcher Servelet is our Front Controller.
 
                Browser
-			      | 
-			      |
+                  | 
+                  |
            Front Controller
-		   =================
-		  /     |     |     \
-         /      |     |      \
-	Servlet1  View1  View2  Servlet2
-         \      |     |      /
-          \     |     |     / 
-     	   =================
+          =================
+         /     |     |     \
+        /      |     |      \
+   Servlet1  View1  View2  Servlet2
+        \      |     |      /
+         \     |     |     / 
+           =================
           |      Model      |
            =================
 
