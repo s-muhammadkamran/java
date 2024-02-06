@@ -176,6 +176,13 @@ It'll allow you to run JSP's from embed Tomcat
 	<artifactId>tomcat-embed-jasper</artifactId>
 </dependency>
 
+If you want to redirect to a view you can add redirect: keywork before the view name.
+
+@RequestMapping(value={"say-hello-jsp")
+public String sayHelloJsp() {
+	return "redirect:sayHelloInJsp";
+}
+
 ======================
 Model or RequestScope:
 ======================
@@ -272,6 +279,49 @@ In order for Bootstrap to work everything should be enclosed in a Div tag with c
 <div class="container">
 .....
 </div>
+
+Validations:
+============
+There are mainly 2 type of validations you can do. Client Side and Server Side
+
+1. For client side validations you can do the following:
+   a. Add HTML validations like Required, FieldType, RegularExpressions etc directly on HTML controls.
+   b. Add Javascript custom validations.
+   c. Show validations messages on Frontend.
+2. For Server side validation in Spring you can do the following:
+   a. Coomand Bean (Form Backing Object)
+   b. Add validations directly to bean like @Required annotations
+
+We need to add a starter project called
+spring-boot-starter-validation
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+
+Add a command bean and form backing object. For example if we have a Todo java class
+In the parameter of your controller directly bind to an object of Todo.
+
+public String saveNewTodo(ModelMap model, Todo todo) {}
+
+From front end side in order to do this from JSP we need to use a JSTL tag libray 
+called Spring Form Tag Library like the one we used forEach
+
+<%@ taglib prefix="frm" uri="http://www.springframework.org/tags/form" %>
+
+Since the prefix is defined as frm you can define your JSP form as:
+
+<frm:form method="post" modelAttribute="todo">
+modelAttribute is the name of the variable in the controller which define our todo object model.
+
+After that we need to match each properties of our object to a form field using path attribute like:
+This will tell that this field will be assigned to description field of our Todo bean.
+<frm:input type="text" path="description" required="required" />
+
+
+
+
 
     
 
