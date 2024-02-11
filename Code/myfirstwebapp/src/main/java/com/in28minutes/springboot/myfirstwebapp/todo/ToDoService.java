@@ -9,6 +9,7 @@ import java.util.*;
 @Service
 public class ToDoService {
     private final static List<Todo> todos = new ArrayList<Todo>();
+
     static {
         //todos = new List<Todo>();
 
@@ -29,10 +30,10 @@ public class ToDoService {
     }
 
     public List<Todo> findByUserName(String userName) {
-        return todos;
+        return ToDoService.todos;
     }
 
     public void addTodo(String userName, String description, LocalDate targetDate, boolean isDone) {
-        todos.add(new Todo(todos.size()+1, userName, description, targetDate, isDone));
+        ToDoService.todos.add(new Todo(todos.size()+1, userName, description, targetDate, isDone));
     }
 }

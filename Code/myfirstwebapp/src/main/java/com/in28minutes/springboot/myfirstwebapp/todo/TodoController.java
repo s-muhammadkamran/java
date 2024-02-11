@@ -21,7 +21,7 @@ public class TodoController {
         return "listTodos";
     }
 
-    @RequestMapping(value="add-todo")
+    @RequestMapping(value="add-todo", method=RequestMethod.GET)
     public String showNewTodoPage(ModelMap model) {
         var name = (String)model.get("name");
         var todo = new Todo(0, name, "", LocalDate.now().plusYears(1), false);

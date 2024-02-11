@@ -1,6 +1,7 @@
 package com.in28minutes.springboot.myfirstwebapp.todo;
 
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -11,6 +12,7 @@ public class Todo {
     private int id;
     private String userName;
     @Size(min=10, max=500, message="Enter at-least 10 characters")
+    @NotEmpty(message = "Description can't be empty")
     private String description;
     @FutureOrPresent(message="Target Date can't be in the past")
     private LocalDate target;

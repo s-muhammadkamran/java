@@ -319,6 +319,31 @@ After that we need to match each properties of our object to a form field using 
 This will tell that this field will be assigned to description field of our Todo bean.
 <frm:input type="text" path="description" required="required" />
 
+Validation Notations:
+=====================
+You can use validation notations on the Objects to perform some validations:
+These validations allows you to add constraints on object model via annotations.
+Jakarta.Validation
+
+You apply the validations of properties on fields
+You can also apply them to collections
+List<@NotBlank String> preferences;
+
+@Size(min=10, max=500, message="Enter at-least 10 characters")
+@FutureOrPresent(message="Target Date can't be in the past")
+@NotNull
+@NotEmpty = Validates that the property is not null and empty
+@Email
+@AssertTrue = Validates that the value is true
+@Min
+@Max
+@Past, @PastOrPresent, @Future, @FutureOrPresent
+
+
+
+
+
+
 
 
 
