@@ -1,28 +1,220 @@
-Me and My team delivered the following this year:
+What are spring Starter Projects:
+=================================
+If you want to build a Rest API you need
+   Spring
+   Spring MVC
+   Tomcat
+   JSON conversion
+   Any many more
 
-Ertah
+Simillarly if you want to write unit tests you need
+   Spring Test
+   JUnit
+   Mockito
 
-1. Admin Portal Enhancements
-2. Absher Fix Permit Service Implementation
-3. Ticketing System
-4. Billing System Integration, TashaleePro
-5. Payment Gateway Integration, TashaleePro & Broker
-6. Broker R1, R2 & R3
-7. Admin Portal Workshop Enhancements
-8. Fix Permit Generation from AdminPortal
-9. Fix Permit Generation from WorkshopApp
-10. PoC for CarScan AI
-11. Dashboard Images Processing using AI Model
-12. Car Plate Image Capturing using AI Model
-13. Tools to Generate & Check-in Fix Permits
-14. Supported Business Operation on Daily basis
-15. Bug Fixing from Existing System on Daily basis
-16. Security Bugs fixes on time raised by Cyber Security Team
-17. Provide Support, solve issues, handover to Citizen Account team on Request of manager
-18. Deliver everything under the record estimated time
+Spring starter projects are template/combination of all the dependencies
+to build an specific type of application. They are dependency descriptors
+Spring boot is a simillar type of starter project which support building
+Microservices based applications.   
 
-BayanatTech
+Spring Boot:
+============
+Spring boot enable you to build Production-Ready application qucikly.
 
-VDM - VIN Decoder APIs
-VDM Integration with Vehicle Recalls
-Vehicle Recalls Geo Service Implementation
+To Build Quickly it provides:
+
+1. Spring Initializer
+2. Spring Boot Starter Project (Convinient Dependency Descriptors) for example:
+   a. Spring Boot Starter
+   b. Spring Boot Starter Web
+   c. Spring Boot Starter WebMvc
+   d. Spring Boot Starter Mvc   
+   e. Spring Boot Starter Json
+   f. Spring Boot Starter Tomcat
+   g. Spring Boot Starter Test
+   h. Spring Boot Starter JPA
+   i. Spring Boot Starter JDBC
+   j. Spring Boot Starter Security
+3. Spring Boot Auto Configuration
+4. Spring Boot DevTools
+
+To Be Production-Ready it provides:
+
+1. Logging
+2. Environment based Configuration
+     a. Profiles
+	 b. Configuration Properties
+3. Monitoring 
+     a. Spring Boot Actuator
+
+How to start a Spring Boot Project:
+===================================
+Goto https://start.spring.io
+Choose Maven as build tool, Java as language
+Group name is the Package name
+Artifact name is the ApplicationName
+Packaging choose Jar
+Choose Latest Java Version.
+Add dependency for Spring.Web
+
+@SpringBootApplication Annotation:
+==================================
+This annotation defines the entry point for a SpringBootApplication
+
+It's a combination of 3 annotations:
+
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan
+
+@RestController Annotation:
+===========================
+This annotaion is a Stereotype annotation of @Component. 
+It declares that the class is a REST API Controller
+
+@RequestMapping("/courses") Annotation:
+=======================================
+This annotation provides the mapping between URL and Methods to invoke
+
+Exploring Spring Boot AutoConfiguration:
+========================================
+To build a Spring Boot application you need alot of configuration. 
+How to simplify it:
+
+Spring Boot provides Auto Configuration for your app based on.
+
+1. What frameworks are in classpath
+2. What is the existing configurations (Annotation etc)?
+
+The configuration are defined in a dependency named: spring-boot-autoconfigure-versions.jar
+
+Spring Boot DevTools:
+=====================
+You need to add the dependency to POM.xml
+
+In IntelliJ advance settings you have to select Compile option
+In Compiler options in settings allow auto compile
+Allow auto-make to start even if developed application is currently running
+
+<dependency>
+	<groupId>org.springframework.boot</groupId>
+	<artifactId>spring-boot-devtools</artifactId>
+	<scope>runtime</scope>
+	<optional>true</optional>
+</dependency>
+
+It provides the following features:
+
+Property Defaults
+Automatic Restart
+Live Reload
+Remote Debug Tunneling
+Remote Update and Restart
+
+Application Configuration using Profiles:
+=========================================
+Environment specific configuratino for Dev, QA, Stage, Prod
+
+You can create property files for each environment:
+Default     = application.properties
+Development = application-dev.properties
+QA          = application-qa.properties
+Staging     = application-stage.properties
+Production  = application-prod.properties
+
+You can switch between environment using the Default file settings valus for:
+spring.profiles.active=[dev|test|stage|prod]
+
+@Profile("dev") //dev|test|stage|prod:
+======================================
+Using this annotation you can define that a bean is available for only a specific profile
+
+@Profile("!dev"):
+================
+Indicate that the bean will be available only if the profile is not dev
+
+You can set profiles Programatically as well:
+=============================================
+implement the WebApplicationInitializer interface
+
+@Configuration
+public class MyWebApplicationInitializer 
+  implements WebApplicationInitializer {
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+
+        servletContext.setInitParameter(
+          "spring.profiles.active", "dev");
+    }
+}
+
+You can also get the object of ConfigurationEnvironment using Dependency Injection
+
+@Autowired
+private ConfigurableEnvironment env;
+env.setActiveProfile("prod");
+
+Log Levels:
+===========
+Set using the property file settings
+
+logging.level.org.springframework=loglevel
+
+TRACE    = trace
+DEBUG    = debug
+FATAL    = fatal
+INFO     = info
+WARN     = warn
+ERROR    = error
+OFF      = off
+
+If a logging level is set for eample to info, all the below levels 
+like (info, warning, error) will be printed as well
+
+Adding complex configurations:
+==============================
+You can use the @ConfigurationProperties("prefix-name") annotation to read config values 
+and then auto wired it.
+
+Simplifying Deployment:
+=======================
+OLD Process:
+
+1. Install Java
+2. Install Web/Application Server like Tomcat/webshere/weblogic
+3. Deploy the application WAR (Web Archive)
+
+New Process:
+
+1. Install Java
+2. Embedded Server (part of your jar file) 
+   Just deploy your web application using Mave Install.
+3. You can than directly run the file using the command
+   java YourJarFileName.jar
+
+Monitor your Application in Production using SpringBoot Actuator:
+=================================================================
+Monitor and Manage your application in Production environment
+You have beans endpoint
+your have health information
+you can have metrics endpoint
+you have mapping endpoint
+
+You can configure the dependency using the pom.xml dependency
+spring-boot-starter-actuator
+
+You than have to reload the project through Maven-Reload Project.
+Then run it and goto: http://localhost:8080/actuator
+
+In order to get more option in actuator you need to add following entry in configuration.
+
+management.endpoints.web.exposure.include=*
+OR
+management.endpoints.web.exposure.include=health,metrics
+
+Some of the important endpoints are
+
+http://localhost:8080/actuator/metrics
+http://localhost:8080/actuator/beans
+http://localhost:8080/actuator/health
