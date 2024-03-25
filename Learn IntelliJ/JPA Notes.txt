@@ -1,0 +1,443 @@
+Spring Data JPA
+===============
+Java provides the JPA (Java Persistent API) specifications
+There are other implementations who implements JPA specifications
+Hibernate is one of those Specifications
+
+In the application.properties or application.yaml define the properties to see the queires Hibernate is generating
+
+spring.jpa.show-sql=true
+spring:
+  jpa:
+    show-sql:true
+
+===================
+Defining an Entity:
+===================
+
+@Repository = Defines a Repository type component
+
+
+@Entity = Declare that this is an entity so it can be mapped against a DB Table
+@TableName = Tells which database table this is referring to
+@Table(
+	name="tbl_student",
+	uniqueConstraints = @UniqueConstraint(
+			name = "email_address_unique",
+			columnNames = "email_address"
+	),
+	schema = "dbo"
+)
+
+@ColumnName = Add the columnname
+@Column(
+	name= "email_address",
+	nullable = false
+)
+	
+@Id = Define that it is PK
+@SequenceGenerator(name = "student_sequence", sequenceName = "student_sequence", allocationSize = 1)
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "student_sequence") = The the value of the field is taken from a sequence
+@GeneratedValue(strategy = GenerationType.IDENTITY) = That the value of this field is auto generated
+
+@Embeddable = Define that a class is not a separate entity but part of another entity.
+@Embedded = Define that a property although a separate object but it's part of the same database table
+@AttributeOverrides & @AttributeOverride = These annotation map the properties to fields in case of Embaddable and Embedded
+
+@Query = to define JPQL or Native query for a repo method. with native query add nativeQuery = true
+@Param("name") = For mapping the named parameter in a Native query
+:embedParam = embed a param in a query
+@Modifying = If you want to update a record using @Query you must mark that method as @Modifying
+@Transactional = Make a whole class or a method to be executed in a transaction.
+
+@OneToOne (
+	cascade = CascadeType.[ALL | DETACH | MERGE | PERSIST | REFRESH | REMOVE],
+	fetch = FetchType.Eager | FetchType.Lazy
+)
+@JoinColumn(name="", referenceColumn="")
+
+//Here you tell that the JoinColumn is already mapped by CourseMaterial class in a property called course
+//This is an example of Bi-Directional relationship
+@OneToOne (mappedBy = "course")
+
+@OneToMany(cascade = CascadeType.All, fetch = FetchType.Lazy, optional = false)
+
+@ManyToOne(cascade = CascadeType.All)
+@JoinColumn(
+	name="teacher_id", //This tells that the Course class will contain a property call teacher_id
+	referenceColumn="teacherId" //It'll reference the teacherId attribute in Teacher class
+) 
+private Teacher teacher;
+
+@ManyToMany
+@ManyToMany(cascade = CascadeType.All, fetch = FetchType.Lazy)
+@JoinTable(
+	name = "student_course_map",           //The name of the 3rd table
+	joinColumns = @JoinColumn(             
+			name = "course_id",            //The column name in the 3rd table which refres to Course
+		referenceColumnName = "course_id"  //The column in the Course table it refers to
+	),
+	inverseJoinColumns = @JoinColumn(     
+		name = "student_id",               //The column name in the 3rd table which refers to Student
+		referenceColumnName = "studentId"  //The column in the Student table it refers to
+	)
+)
+private List<Student> students;
+
+
+
+
+===================
+LOMBOK Annotations:
+===================
+@Data = Generate Getter Setter, toString, Equals and HashCode methods
+@AllArgsConstructor = Generate All Argument Constructor
+@NoArgsConstructor = Generate No Argument Constructor
+@Builder = Enable Builder Pattern on the class StudentBuilder.builder().name("name").id(1).build();
+
+
+
+======================
+Defining a Repository:
+======================
+@Repository Annotation:
+You can define a Repository component using the @Repository annotation
+Then you can extend the defined Repository Interface with different type of pre defined implementation 
+JPA supports and Hibernate or other implementers provide them. Usually JpaRepository interface is the one 
+to extend from
+
+@Repository
+public interface StudentRepository extends JpaRepository<Student, Long> {
+}
+
+Different type of interfaces are available for as a different type of Repositories implementations
+
+
+
+=====================
+JpaRepository<T, ID>:
+=====================
+
+Repository >>> 
+               CrudRepository             >>> ListCrudRepository
+	           PagingAndSortingRepository >>> ListPagingAndSortingRepository
+
+
+
+===============
+CrudRepository:
+===============
+Funcation Like save(entity), findOne(id), findAll(), count(), delete(entity), exists(id)
+
+
+
+===========================
+PagingAndSortingRepository:
+===========================
+Function like findAll(Pageable)
+	  
+
+This type of repository extends further more interfaces
+ListPagingAndSortingRepository, ListCrudRepository, QueryByExampleExecutor
+
+
+
+
+========================
+Embeddable and Embedded:
+========================
+
+@Embeddable: Define that a class is not a separate entity but part of another entity.
+@Embedded: Define that a property although a separate object but it's part of the same database table
+@AttributeOverrides
+@AttributeOverride
+
+This will make sure the data is saved in the same table
+
+@Entity
+@Table(name="class_A")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class ClassA {
+  @Id
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  private Long id;
+  
+  @Embedded
+  private ClassB objB;
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Embaddable
+@AttributeOverrides(
+  {
+    @AttributeOverride(name = "firstName", column = @Column(name = "first_name")),
+    @AttributeOverride(name = "lastName", column = @Column(name = "last_name"))
+  }
+)
+public class ClassB {
+  private string firstName;
+  private string lastName;
+}
+
+
+
+
+===================================
+Adding Custom Method to Repository:
+===================================
+List<Student> findByFirstName(string name);
+List<Student> findByEmailIdContaining("ka");
+List<Student> findByLastNameNotNull();
+List<Student> findByGuardianName(String guardianName);
+
+For the embeddable type you have to use the name of the table field
+
+
+
+
+==================
+Adding JPQL Query:
+==================
+JPQL queries are defined using the Entity class not the SQL DB tables
+
+@Query("select s from Student s where s.emailId = ?1")
+Student getStudentByEmailAddress(String emailId);
+
+@Query("select s.firstName from Student s where s.emailId = ?1")
+String getStudentFirstNameByEmailAddress(String emailId);
+
+This will pass the emailId based on the values fetched from JPQL queries
+
+
+
+
+====================
+Adding Native Query:
+====================
+Native queries are defined using the SQL Table and column names.
+
+@Query(
+  value = "SELECT * FROM tbl_student s where s.guardian_Name LIKE %?1%",
+  nativeQuery = true
+)
+public Student getStudentByGuardianNameNative(String name);
+
+
+
+
+====================
+Using Named Queries:
+====================
+@Entity
+@NamedQuery(name= "User.findByEmailAddress", query="select u from User u where u.emailAddress = ?1")
+public class User {
+}
+
+You can also configure the NamedQuery in the orm.xml file location in the META-INF folder of your classpath
+
+<named-query name="User.findByLastName">
+  <query>Select u from u where u.lastname = ?1</query>
+</named-query>
+
+
+
+
+=========================
+Named Parameter in Query:
+=========================
+@Param
+@Query
+:namedParam
+
+@Query(
+	value = "SELECT * FROM tbl_student s where s.guardian_mobile LIKE %:mobileNo%",
+	nativeQuery = true
+)
+public List<Student> getStudentByGuardianMobileContainingNativeWithNamedParam(@Param("mobileNo") String mobile);
+
+
+
+==============================
+Updating Records using Query`:
+==============================
+@Modifying
+@Query(
+    value = """
+	          update tbl_student set first_name = :fname
+			  where email address = :email
+			""",
+	nativeQuery = true
+)
+public int updateStudentNameByEmailId(@Param("name") String name, @Param("email") String email);
+
+When you are updating a record using Native query you need to mark the Query with @Modifying annotation.
+
+
+
+=============
+Transactions:
+=============
+@Transactional
+You can mark a whole class or a particular method as @Transactional
+This will allow the operations to be occoured in a transaction scope
+Ideally if you want multiple operations to take place you use the
+@Transactional at the Service layer to make sure complete operation
+is either done or rollback.
+
+
+
+=============
+Relationship:
+=============
+
+
+
+===========
+One To One:
+===========
+@Entity
+public class CourseMaterial {
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
+   
+   private String url;
+   
+   @OneToOne
+   @JoinColumn(name="course_id", referenceColumn="courseId")
+   private Course course;
+}
+
+name: is the column name which will be the column in the database in the table as the FK column.
+referenceColumn: is the attribute name in the course entity.
+
+
+
+
+========================
+Cascading Insert/Update:
+========================
+Inserting or updating a record in a table will modify or insert the record in the dependent tables.
+
+Course is a table, CourseMaterial is a dependent table.
+Create a record of Course and CourseMaterial together will first create the Course record
+and then provide the details of it to CourseMaterial object so that it can be inserted as well
+
+Cascading is an enum. It is defined in the relationship annotation.
+
+@OneToOne(
+  cascade = CascadeType.[ALL | DETACH | MERGE | PERSIST | REFRESH | REMOVE],
+  fetch = FetchType.Lazy
+)
+
+//Here you tell that the JoinColumn is already mapped by CourseMaterial class in a property called course
+@OneToOne (mappedBy = "course") 
+
+
+============
+Fetch Types:
+============
+FetchType.Eager = The data will be loaded with the Parent
+FetchType.Lazy = The data will be loaded only when you request
+
+
+==============================
+Directionship of Relationship:
+==============================
+
+UniDirectional Relationship 
+===========================
+When you have 2 classes related to each other and you keep the related records accessible from one of the entity only.
+
+Bi-Directional Relationship
+===========================
+When you have 2 classes related to each other and you keep the related records accessbile from both entities
+In this case in the Relationship attribute we need to only tell the attribute which is already maped by the other entity.
+
+@Entity
+public class Course {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer id;
+  private String name;
+  
+  @OneToOne (mappedBy = "course") 
+  //Here you tell that the JoinColumn is already mapped by CourseMaterial class in a property called course
+  private CourseMaterial courseMaterial
+}
+
+@Entity
+public class CourseMaterial {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Integer courseMaterialId;
+  private String url;
+  
+  @OneToOne(cascade = CascadeType.All, fetch = FetchType.Lazy, optional = true|false)
+  @JoinColumn(name="course_id", referenceColumn="id")
+  private Course course;
+}
+
+
+
+
+============
+One To Many:
+============
+1 Teach can taught many courses
+@OneToMany(cascade = CascadeType.All, fetch = FetchType.Lazy, optional = false)
+@JoinColumn(name="teacher_id", referenceColumn="teacherId")
+private List<Courses> courses;
+
+
+============
+Many To One: (Recomended by JPA)
+============
+Many Courses can be Taught by 1 Teacher So in the Course class you can define the Teacher object
+@ManyToOne(cascade = CascadeType.All)
+@JoinColumn(
+	name="teacher_id", //This tells that the Course class will contain a property call teacher_id
+	referenceColumn="teacherId" //It'll reference the teacherId attribute in Teacher class
+) 
+private Teacher teacher;
+
+
+
+=============
+Many To Many:
+=============
+Many Student can Opt for Many Courses
+Many to Many relationshihp needs 3rd table to hold the mapping.
+
+So you define in your course class the following:
+
+@ManyToMany(cascade = CascadeType.All, fetch = FetchType.Lazy)
+@JoinTable(
+	name = "student_course_map",           //The name of the 3rd table
+	joinColumns = @JoinColumn(             
+			name = "course_id",            //The column name in the 3rd table which refres to Course
+		referenceColumnName = "course_id"  //The column in the Course table it refers to
+	),
+	inverseJoinColumns = @JoinColumn(     
+		name = "student_id",               //The column name in the 3rd table which refers to Student
+		referenceColumnName = "studentId"  //The column in the Student table it refers to
+	)
+)
+private List<Student> students;
+
+
+
+===================
+Paging and Sorting:
+===================
+JPA repository extends from the PagingAndSortingRepositry
+
+Pageable firstPageWithThreeRecords = PageRequest.of(0, 3);
+Pageable secondPageWithTwoRecords = PageRequest.of(1, 2);
+
+List<Course> courses = 
+
